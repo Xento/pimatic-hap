@@ -14,5 +14,19 @@ module.exports = {
       description: "The network port that the bridge is using"
       type: "integer"
       default: 51826
+    devices:
+      description: "extends the devices section with additional attributes"
+      type: "array"
+      default: []
+      items:
+        type: "object"
+        properties:
+          id:
+            type: "string"
+          service:
+            description: "Associated service type"
+            type: "string"
+            enum: ["Lightbulb", "Fan", "None"]
+            default: "None"
   }
 };
