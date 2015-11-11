@@ -357,5 +357,18 @@ module.exports = (env) =>
           @getService(Service.Thermostat)
             .setCharacteristic(Characteristic.TargetHeatingCoolingState, Characteristic.TargetHeatingCoolingState.AUTO)
 
+  ##
+  # ButtonsDevice
+  ##
+  class ButtonsAccessory extends DeviceAccessory
+
+    constructor: (device) ->
+      super(device)
+
+      for b in device.config.buttons
+        @addService(Service.StatelessProgrammableSwitch, device.name + "." + b.id)
+          .getCharacteristic(Characteristic.ProgrammableSwitchEvent)
+          .on 'set', (value, callback) =>
+            device.buttonPressed(b.id)
 
   return plugin
