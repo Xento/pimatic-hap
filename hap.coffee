@@ -40,6 +40,8 @@ module.exports = (env) =>
           accessory = new ContactAccessory(device)
         else if device instanceof env.devices.HeatingThermostat
           accessory = new ThermostatAccessory(device)
+        else if device instanceof env.devices.ButtonsDevice
+          accessory = new ButtonsAccessory(device)
         else
           env.logger.debug("unsupported device type " + device.constructor.name)
         if accessory?
@@ -122,7 +124,7 @@ module.exports = (env) =>
       env.logger.debug("blinking " + device.name + " twice for identification")
       # make sure it's off, then turn on and off twice
       promise = device.getState()
-        .then( (state) => 
+        .then( (state) =>
           device.turnOff()
           .then( => device.turnOn() )
           .then( => device.turnOff() )
@@ -366,8 +368,8 @@ module.exports = (env) =>
       super(device)
 
       for b in device.config.buttons
-        @addService(Service.StatelessProgrammableSwitch, device.name + "." + b.id)
-          .getCharacteristic(Characteristic.ProgrammableSwitchEvent)
+        @addService(Service.StatefulProgrammableSwitch, device.name, b.id)
+          .getCharacteristic(Characteristic.ProgrammableSwitchOutputState)
           .on 'set', (value, callback) =>
             device.buttonPressed(b.id)
 
