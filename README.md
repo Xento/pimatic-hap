@@ -22,7 +22,24 @@ Please use 031-45-154 as pin, when pairing with the pimatic homekit bridge.
 
 Every iOS app that works with homekit should work with this (like Elgato Eve), so no need for an Apple developer account.
 
-Changelog:
+### Sponsoring
+
+Do you like this plugin? Then consider a donation to support development.
+
+<span class="badge-paypal"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2T48JXA589B4Y" title="Donate to this project using Paypal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" alt="PayPal donate button" /></a></span>
+
+### Changelog
+
+0.3.0
+* [#4](https://github.com/michbeck100/pimatic-hap/issues/4) refactored use of promises
+* Fix for restore state at device identify
+* updated hap-nodejs dependency to 0.0.6
+
+0.2.2
+* contact sensor handling fixed
+
+0.2.1
+* #3 - fixed error with contact sensor accessory
 
 0.2.0
 * support for TemperatureSensor, ContactSensor, HeatingThermostat
@@ -38,3 +55,6 @@ Changelog:
 0.0.1
 * initial release
 * support for switches and dimmers
+
+### Credit
+The original HomeKit API work was done by [KhaosT](http://twitter.com/khaost) in his [HAP-NodeJS](https://github.com/KhaosT/HAP-NodeJS) project.

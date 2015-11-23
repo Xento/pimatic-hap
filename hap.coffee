@@ -105,7 +105,7 @@ module.exports = (env) =>
       promise
         .then( (value) =>
           env.logger.debug("returning value " + value)
-          if converter != null
+          if converter == null
             value = converter(value)
             env.logger.debug("value converted to " + value)
           callback(null, value)
@@ -147,13 +147,16 @@ module.exports = (env) =>
       @addService(Service.Switch, device.name)
         .getCharacteristic(Characteristic.On)
         .on 'set', (value, callback) =>
+          if device._state == value
+            callback()
+            return
           env.logger.debug("changing state of " + this.displayName + " to " + value)
           this.handleVoidPromise(device.changeStateTo(value), callback)
 
       @getService(Service.Switch)
         .getCharacteristic(Characteristic.On)
         .on 'get', (callback) =>
-          this.handleReturnPromise(device.getState(), callback)
+          this.handleReturnPromise(device.getState(), callback, null)
 
       device.on 'state', (state) =>
         env.logger.debug("switch state changed. Notifying iOS devices.")
@@ -172,6 +175,9 @@ module.exports = (env) =>
       @addService(Service.Lightbulb, device.name)
         .getCharacteristic(Characteristic.On)
         .on 'set', (value, callback) =>
+          if device._state == value
+            callback()
+            return
           env.logger.debug("changing state to " + value)
           promise = null
           if value
@@ -188,7 +194,7 @@ module.exports = (env) =>
       @getService(Service.Lightbulb)
         .getCharacteristic(Characteristic.Brightness)
         .on 'get', (callback) =>
-          this.handleReturnPromise(device.getDimlevel(), callback)
+          this.handleReturnPromise(device.getDimlevel(), callback, null)
 
       device.on 'dimlevel', (dimlevel) =>
         env.logger.debug("dimlevel changed. Notifying iOS devices.")
@@ -198,6 +204,9 @@ module.exports = (env) =>
       @getService(Service.Lightbulb)
         .getCharacteristic(Characteristic.Brightness)
         .on 'set', (value, callback) =>
+          if device._dimlevel == value
+            callback()
+            return
           env.logger.debug("changing dimLevel to " + value)
           this.handleVoidPromise(device.changeDimlevelTo(value), callback)
 
